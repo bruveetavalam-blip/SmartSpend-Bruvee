@@ -133,4 +133,41 @@ public void calculateRemainingBudget(String month, ExpenseManager expenseManager
 
     System.out.println("No monthly budget found for " + month);
 }
+public void checkBudgetLimit(String month, ExpenseManager expenseManager) {
+    boolean found = false;
+
+    for (int i = 0; i < budgetCount; i++) {
+        Budget budget = budgets[i];
+
+        if (budget.getMonth().equals(month)) {
+            found = true;
+
+            double spent;
+
+            if (budget.getCategory().equals("Overall")) {
+                spent = expenseManager.calculateMonthlyExpenses(month);
+            } else {
+                spent = expenseManager.calculateCategoryExpenses(
+                    month, budget.getCategory()
+                );
+            }
+
+            System.out.println("Category: " + budget.getCategory());
+            System.out.println("Budget: Rs. " + budget.getAmount());
+            System.out.println("Spent: Rs. " + spent);
+
+            if (spent > budget.getAmount()) {
+                System.out.println("Warning! Budget limit exceeded.");
+            } else {
+                System.out.println("You are within your budget.");
+            }
+
+            System.out.println("--------------------");
+        }
+    }
+
+    if (!found) {
+        System.out.println("No budgets found for " + month);
+    }
+}
 }
