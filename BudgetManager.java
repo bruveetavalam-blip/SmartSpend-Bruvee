@@ -94,4 +94,21 @@ public class BudgetManager {
 
         System.out.println("Category budget saved successfully!");
     }
+    public void displayBudgets() {
+    if (budgetCount == 0) {
+        System.out.println("No budgets to display.");
+        return;
+    }
+
+    System.out.println("===== Saved Budgets =====");
+
+    for (int i = 0; i < budgetCount; i++) {
+        Budget budget = budgets[i];
+
+        System.out.println("Month: " + budget.getMonth());
+        System.out.println("Category: " + budget.getCategory());
+        System.out.println("Amount: Rs. " + budget.getAmount());
+        System.out.println("--------------------");
+    }
+}
 }
