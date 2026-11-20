@@ -391,6 +391,52 @@ public class ExpenseManager {
         }
     }
 
+    public void filterExpensesByAmountRange(Scanner scanner) {
+        System.out.println("Enter minimum amount:");
+        double minimumAmount;
+        try {
+            minimumAmount = Double.parseDouble(scanner.nextLine().trim());
+        } catch (NumberFormatException exception) {
+            System.out.println("Enter a numeric minimum amount.");
+            return;
+        }
+        if (!Double.isFinite(minimumAmount) || minimumAmount < 0) {
+            System.out.println("Minimum amount must be a non-negative, finite number.");
+            return;
+        }
+
+        System.out.println("Enter maximum amount:");
+        double maximumAmount;
+        try {
+            maximumAmount = Double.parseDouble(scanner.nextLine().trim());
+        } catch (NumberFormatException exception) {
+            System.out.println("Enter a numeric maximum amount.");
+            return;
+        }
+        if (!Double.isFinite(maximumAmount) || maximumAmount < 0) {
+            System.out.println("Maximum amount must be a non-negative, finite number.");
+            return;
+        }
+
+        if (minimumAmount > maximumAmount) {
+            System.out.println("Minimum amount cannot be greater than maximum amount.");
+            return;
+        }
+
+        boolean found = false;
+        for (int i = 0; i < expenseCount; i++) {
+            double expenseAmount = expenses[i].getAmount();
+            if (expenseAmount >= minimumAmount && expenseAmount <= maximumAmount) {
+                printExpense(expenses[i]);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No expenses found in that amount range.");
+        }
+    }
+
     public void searchByDescription(Scanner scanner) {
         System.out.println("Enter a word or phrase to search in expense descriptions:");
         String keyword = scanner.nextLine().trim();
