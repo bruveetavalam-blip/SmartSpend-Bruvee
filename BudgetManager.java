@@ -110,5 +110,27 @@ public class BudgetManager {
         System.out.println("Amount: Rs. " + budget.getAmount());
         System.out.println("--------------------");
     }
+    
+
+}
+public void calculateRemainingBudget(String month, ExpenseManager expenseManager) {
+    for (int i = 0; i < budgetCount; i++) {
+        Budget budget = budgets[i];
+
+        if (budget.getMonth().equals(month)
+                && budget.getCategory().equals("Overall")) {
+
+            double totalExpenses = expenseManager.calculateMonthlyExpenses(month);
+            double remaining = budget.getAmount() - totalExpenses;
+
+            System.out.println("Month: " + month);
+            System.out.println("Monthly Budget: Rs. " + budget.getAmount());
+            System.out.println("Total Expenses: Rs. " + totalExpenses);
+            System.out.println("Remaining Budget: Rs. " + remaining);
+            return;
+        }
+    }
+
+    System.out.println("No monthly budget found for " + month);
 }
 }
