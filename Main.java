@@ -79,6 +79,12 @@ public class Main {
                 case "8":
                     System.out.println("Enter month (YYYY-MM):");
                     String remainingMonth = scanner.nextLine().trim();
+
+                    if (!isValidMonth(remainingMonth)) {
+                        System.out.println("Invalid month. Use YYYY-MM.");
+                        break;
+                    }
+
                     budgetManager.calculateRemainingBudget(
                         remainingMonth, expenseManager
                     );
@@ -87,6 +93,12 @@ public class Main {
                 case "9":
                     System.out.println("Enter month (YYYY-MM):");
                     String limitMonth = scanner.nextLine().trim();
+
+                    if (!isValidMonth(limitMonth)) {
+                        System.out.println("Invalid month. Use YYYY-MM.");
+                        break;
+                    }
+
                     budgetManager.checkBudgetLimit(
                         limitMonth, expenseManager
                     );
@@ -95,6 +107,12 @@ public class Main {
                 case "10":
                     System.out.println("Enter month (YYYY-MM):");
                     String totalMonth = scanner.nextLine().trim();
+
+                    if (!isValidMonth(totalMonth)) {
+                        System.out.println("Invalid month. Use YYYY-MM.");
+                        break;
+                    }
+
                     double total = expenseManager.calculateMonthlyExpenses(totalMonth);
                     System.out.println("Total Expenses: Rs. " + total);
                     break;
@@ -108,5 +126,11 @@ public class Main {
             }
 
         } while (!choice.equals("11"));
+    }
+
+    // Validate month in YYYY-MM format
+    private static boolean isValidMonth(String month) {
+        return month.matches("[0-9]{4}-(0[1-9]|1[0-2])")
+                && !month.startsWith("0000");
     }
 }
