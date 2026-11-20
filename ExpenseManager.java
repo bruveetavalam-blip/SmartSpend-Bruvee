@@ -152,6 +152,138 @@ public class ExpenseManager {
         System.out.println("Expense deleted successfully.");
     }
 
+    public void editExpense(Scanner scanner) {
+        if (expenseCount == 0) {
+            System.out.println("No expenses to edit.");
+            return;
+        }
+
+        System.out.println("===== Expenses =====");
+        for (int i = 0; i < expenseCount; i++) {
+            System.out.println("Expense " + (i + 1) + ":");
+            printExpense(expenses[i]);
+        }
+
+        System.out.println("Enter the expense number or exact description to edit:");
+        String selection = scanner.nextLine().trim();
+        int selectedIndex;
+
+        try {
+            selectedIndex = Integer.parseInt(selection) - 1;
+            if (selectedIndex < 0 || selectedIndex >= expenseCount) {
+                System.out.println("Invalid expense number.");
+                return;
+            }
+        } catch (NumberFormatException exception) {
+            int[] matchingIndexes = new int[expenseCount];
+            int matchCount = 0;
+
+            for (int i = 0; i < expenseCount; i++) {
+                if (expenses[i].getDescription().equalsIgnoreCase(selection)) {
+                    matchingIndexes[matchCount] = i;
+                    matchCount++;
+                }
+            }
+
+            if (matchCount == 0) {
+                System.out.println("No expense found with that description.");
+                return;
+            }
+
+            if (matchCount == 1) {
+                selectedIndex = matchingIndexes[0];
+            } else {
+                System.out.println("Multiple expenses have that description:");
+                for (int i = 0; i < matchCount; i++) {
+                    int index = matchingIndexes[i];
+                    System.out.println("Expense " + (index + 1) + ":");
+                    printExpense(expenses[index]);
+                }
+
+                System.out.println("Enter the expense number to edit:");
+                String matchingSelection = scanner.nextLine().trim();
+                try {
+                    selectedIndex = Integer.parseInt(matchingSelection) - 1;
+                } catch (NumberFormatException invalidSelection) {
+                    System.out.println("Invalid expense number.");
+                    return;
+                }
+
+                boolean isMatchingExpense = false;
+                for (int i = 0; i < matchCount; i++) {
+                    if (matchingIndexes[i] == selectedIndex) {
+                        isMatchingExpense = true;
+                        break;
+                    }
+                }
+                if (!isMatchingExpense) {
+                    System.out.println("Invalid expense number.");
+                    return;
+                }
+            }
+        }
+
+        Expense expense = expenses[selectedIndex];
+        System.out.println("Current expense details:");
+        printExpense(expense);
+        System.out.println("Enter new amount, or press Enter to keep " + expense.getAmount() + ":");
+        String amountInput = scanner.nextLine().trim();
+        if (amountInput.equalsIgnoreCase("cancel")) {
+            System.out.println("Expense editing cancelled.");
+            return;
+        }
+
+        double amount = expense.getAmount();
+        if (!amountInput.isEmpty()) {
+            try {
+                amount = Double.parseDouble(amountInput);
+            } catch (NumberFormatException exception) {
+                System.out.println("Enter a numeric amount, such as 125.50. Expense unchanged.");
+                return;
+            }
+            if (!Double.isFinite(amount) || amount <= 0) {
+                System.out.println("Amount must be a positive, finite number. Expense unchanged.");
+                return;
+            }
+        }
+
+        System.out.println("Enter new category, or press Enter to keep " + expense.getCategory() + ":");
+        String categoryInput = scanner.nextLine().trim();
+        if (categoryInput.equalsIgnoreCase("cancel")) {
+            System.out.println("Expense editing cancelled.");
+            return;
+        }
+        String category = expense.getCategory();
+        if (!categoryInput.isEmpty()) {
+            category = findCategory(categoryInput);
+            if (category == null) {
+                System.out.println("Choose Food, Travel, Shopping, Education, or Others. Expense unchanged.");
+                return;
+            }
+        }
+
+        System.out.println("Enter new date (YYYY-MM-DD), or press Enter to keep " + expense.getDate() + ":");
+        String dateInput = scanner.nextLine().trim();
+        if (dateInput.equalsIgnoreCase("cancel")) {
+            System.out.println("Expense editing cancelled.");
+            return;
+        }
+        String date = expense.getDate();
+        if (!dateInput.isEmpty()) {
+            if (!isValidDate(dateInput)) {
+                System.out.println("Enter a valid date in YYYY-MM-DD format. Expense unchanged.");
+                return;
+            }
+            date = dateInput;
+        }
+
+        expense.setAmount(amount);
+        expense.setCategory(category);
+        expense.setDate(date);
+        System.out.println("Expense updated successfully:");
+        printExpense(expense);
+    }
+
     public void searchByCategory(String category) {
         String matchingCategory = findCategory(category);
         if (matchingCategory == null) {
