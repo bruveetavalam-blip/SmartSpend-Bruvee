@@ -149,4 +149,19 @@ public class ExpenseManager {
 
     return total;
 }
+public double calculateCategoryExpenses(String month, String category) {
+    double total = 0;
+
+    for (int i = 0; i < expenseCount; i++) {
+        Expense expense = expenses[i];
+
+        if (expense.getDate().startsWith(month + "-")
+                && expense.getCategory().equalsIgnoreCase(category)) {
+
+            total = total + expense.getAmount();
+        }
+    }
+
+    return total;
+}
 }
