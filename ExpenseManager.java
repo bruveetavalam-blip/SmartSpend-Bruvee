@@ -1,7 +1,15 @@
 import java.util.Scanner;
 
 public class ExpenseManager {
+    private Expense[] expenses = new Expense[100];
+    private int expenseCount = 0;
+
     public void addExpense(Scanner scanner) {
+        if (expenseCount == expenses.length) {
+            System.out.println("Expense list is full.");
+            return;
+        }
+
         System.out.println("Enter amount:");
         double amount = Double.parseDouble(scanner.nextLine());
 
@@ -15,6 +23,8 @@ public class ExpenseManager {
         String description = scanner.nextLine();
 
         Expense expense = new Expense(amount, category, date, description);
-        System.out.println("Expense entered: " + expense.getDescription());
+        expenses[expenseCount] = expense;
+        expenseCount++;
+        System.out.println("Expense stored: " + expense.getDescription());
     }
 }
