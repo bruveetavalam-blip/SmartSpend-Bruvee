@@ -328,6 +328,41 @@ public class ExpenseManager {
         }
     }
 
+    public void searchByDateRange(Scanner scanner) {
+        System.out.println("Enter start date (YYYY-MM-DD):");
+        String startDate = scanner.nextLine().trim();
+        if (!isValidDate(startDate)) {
+            System.out.println("Enter a valid start date in YYYY-MM-DD format.");
+            return;
+        }
+
+        System.out.println("Enter end date (YYYY-MM-DD):");
+        String endDate = scanner.nextLine().trim();
+        if (!isValidDate(endDate)) {
+            System.out.println("Enter a valid end date in YYYY-MM-DD format.");
+            return;
+        }
+
+        if (startDate.compareTo(endDate) > 0) {
+            System.out.println("Start date cannot be after the end date.");
+            return;
+        }
+
+        boolean found = false;
+        for (int i = 0; i < expenseCount; i++) {
+            String expenseDate = expenses[i].getDate();
+            if (expenseDate.compareTo(startDate) >= 0
+                    && expenseDate.compareTo(endDate) <= 0) {
+                printExpense(expenses[i]);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No expenses found in the selected date range.");
+        }
+    }
+
     public void searchByAmount(Scanner scanner) {
         System.out.println("Enter expense amount:");
         double amount;
