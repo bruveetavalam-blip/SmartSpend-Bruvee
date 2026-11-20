@@ -49,7 +49,8 @@ public class Main {
             System.out.println("18. Search expenses by date range");
             System.out.println("19. Filter expenses by amount range");
             System.out.println("20. Category-wise expense summary");
-            System.out.println("21. Exit");
+            System.out.println("21. Compare expenses between months");
+            System.out.println("22. Exit");
             System.out.println("Enter your choice:");
 
             choice = scanner.nextLine().trim();
@@ -176,14 +177,38 @@ public class Main {
                     break;
 
                 case "21":
+                    System.out.println("Enter first month (YYYY-MM):");
+                    String firstComparisonMonth = scanner.nextLine().trim();
+                    if (!isValidMonth(firstComparisonMonth)) {
+                        System.out.println("Invalid month. Use YYYY-MM.");
+                        break;
+                    }
+
+                    System.out.println("Enter second month (YYYY-MM):");
+                    String secondComparisonMonth = scanner.nextLine().trim();
+                    if (!isValidMonth(secondComparisonMonth)) {
+                        System.out.println("Invalid month. Use YYYY-MM.");
+                        break;
+                    }
+                    if (firstComparisonMonth.equals(secondComparisonMonth)) {
+                        System.out.println("Choose two different months to compare.");
+                        break;
+                    }
+
+                    expenseManager.displayMonthlyExpenseComparison(
+                        firstComparisonMonth, secondComparisonMonth
+                    );
+                    break;
+
+                case "22":
                     System.out.println("Goodbye!");
                     break;
 
                 default:
-                    System.out.println("Invalid choice. Please enter a number from 1 to 21.");
+                    System.out.println("Invalid choice. Please enter a number from 1 to 22.");
             }
 
-        } while (!choice.equals("21"));
+        } while (!choice.equals("22"));
     }
 
     // Validate month in YYYY-MM format

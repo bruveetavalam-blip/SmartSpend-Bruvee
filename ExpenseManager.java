@@ -584,6 +584,44 @@ public class ExpenseManager {
     return total;
 }
 
+public void displayMonthlyExpenseComparison(String firstMonth, String secondMonth) {
+    double firstTotal = calculateMonthlyExpenses(firstMonth);
+    double secondTotal = calculateMonthlyExpenses(secondMonth);
+
+    System.out.println("===== Monthly Expense Comparison =====");
+    System.out.println(firstMonth + " Total Expenses: Rs. " + firstTotal);
+    if (firstTotal == 0) {
+        System.out.println("No expenses recorded for " + firstMonth + ".");
+    }
+    System.out.println(secondMonth + " Total Expenses: Rs. " + secondTotal);
+    if (secondTotal == 0) {
+        System.out.println("No expenses recorded for " + secondMonth + ".");
+    }
+
+    double difference = Math.abs(secondTotal - firstTotal);
+    System.out.println("Spending Difference: Rs. " + difference);
+    if (firstTotal > secondTotal) {
+        System.out.println(firstMonth + " had higher expenses.");
+    } else if (secondTotal > firstTotal) {
+        System.out.println(secondMonth + " had higher expenses.");
+    } else {
+        System.out.println("Both months had the same total expenses.");
+    }
+
+    if (firstTotal == 0) {
+        System.out.println("Percentage change: Not available because the first month has zero spending.");
+    } else {
+        double percentageChange = ((secondTotal - firstTotal) / firstTotal) * 100;
+        if (percentageChange > 0) {
+            System.out.println("Increase: " + percentageChange + "%");
+        } else if (percentageChange < 0) {
+            System.out.println("Decrease: " + Math.abs(percentageChange) + "%");
+        } else {
+            System.out.println("Percentage change: 0.0%");
+        }
+    }
+}
+
 public void displayMonthlyExpenseSummary(String month) {
     double total = 0;
     int count = 0;
