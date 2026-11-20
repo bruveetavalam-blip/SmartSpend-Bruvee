@@ -327,6 +327,34 @@ public class ExpenseManager {
         }
     }
 
+    public void searchByAmount(Scanner scanner) {
+        System.out.println("Enter expense amount:");
+        double amount;
+        try {
+            amount = Double.parseDouble(scanner.nextLine().trim());
+        } catch (NumberFormatException exception) {
+            System.out.println("Enter a numeric amount, such as 125.50.");
+            return;
+        }
+
+        if (!Double.isFinite(amount) || amount <= 0) {
+            System.out.println("Amount must be a positive, finite number.");
+            return;
+        }
+
+        boolean found = false;
+        for (int i = 0; i < expenseCount; i++) {
+            if (Double.compare(expenses[i].getAmount(), amount) == 0) {
+                printExpense(expenses[i]);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No expenses found with that amount.");
+        }
+    }
+
     private String findCategory(String input) {
         String trimmedInput = input.trim();
         for (String category : CATEGORIES) {
