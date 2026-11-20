@@ -1,3 +1,4 @@
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
@@ -7,6 +8,16 @@ public class Main {
         System.out.println("Expense Tracker and Budget Planner");
 
         Scanner scanner = new Scanner(System.in);
+        try {
+            runMenu(scanner);
+        } catch (NoSuchElementException exception) {
+            System.out.println("Input ended. Goodbye!");
+        } finally {
+            scanner.close();
+        }
+    }
+
+    private static void runMenu(Scanner scanner) {
         ExpenseManager expenseManager = new ExpenseManager();
         String choice;
 
@@ -17,7 +28,7 @@ public class Main {
             System.out.println("4. Search by category");
             System.out.println("5. Search by month");
             System.out.println("Enter your choice:");
-            choice = scanner.nextLine();
+            choice = scanner.nextLine().trim();
 
             switch (choice) {
                 case "1":
@@ -42,6 +53,5 @@ public class Main {
             }
         } while (!choice.equals("2"));
 
-        scanner.close();
     }
 }
