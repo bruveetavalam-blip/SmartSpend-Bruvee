@@ -1,5 +1,8 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -760,6 +763,38 @@ public void displayExpenseCountByCategory() {
         System.out.println(CATEGORIES[i] + ": " + categoryCounts[i]);
     }
     System.out.println("Total Recorded Expenses: " + expenseCount);
+}
+
+public void exportExpensesToCsv() {
+    if (expenseCount == 0) {
+        System.out.println("No expenses to export.");
+        return;
+    }
+
+    String fileName = "expenses.csv";
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+        writer.write("amount,category,date,description");
+        writer.newLine();
+
+        for (int i = 0; i < expenseCount; i++) {
+            Expense expense = expenses[i];
+            writer.write(expense.getAmount() + ","
+                    + toCsvField(expense.getCategory()) + ","
+                    + toCsvField(expense.getDate()) + ","
+                    + toCsvField(expense.getDescription()));
+            writer.newLine();
+        }
+
+    } catch (IOException exception) {
+        System.out.println("Unable to export expenses to " + fileName + ": "
+                + exception.getMessage());
+        return;
+    }
+    System.out.println("Expenses exported successfully to " + fileName + ".");
+}
+
+private String toCsvField(String value) {
+    return "\"" + value.replace("\"", "\"\"") + "\"";
 }
 
 private int[] calculateCategoryExpenseCounts(String month) {
