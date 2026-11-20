@@ -18,7 +18,7 @@ public class Main {
 
             switch (choice) {
                 case "1":
-                    expenseManager.addExpense();
+                    expenseManager.addExpense(scanner);
                     break;
                 case "2":
                     System.out.println("Goodbye!");
