@@ -39,6 +39,22 @@ public class ExpenseManager {
         }
     }
 
+    public void searchByCategory(String category) {
+        boolean found = false;
+
+        for (int i = 0; i < expenseCount; i++) {
+            Expense expense = expenses[i];
+            if (expense.getCategory().equalsIgnoreCase(category)) {
+                printExpense(expense);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No expenses found in that category.");
+        }
+    }
+
     private void printExpense(Expense expense) {
         System.out.println("Amount: " + expense.getAmount());
         System.out.println("Category: " + expense.getCategory());
