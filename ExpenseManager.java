@@ -64,6 +64,94 @@ public class ExpenseManager {
         }
     }
 
+    public void deleteExpense(Scanner scanner) {
+        if (expenseCount == 0) {
+            System.out.println("No expenses to delete.");
+            return;
+        }
+
+        System.out.println("===== Expenses =====");
+        for (int i = 0; i < expenseCount; i++) {
+            System.out.println("Expense " + (i + 1) + ":");
+            printExpense(expenses[i]);
+        }
+
+        System.out.println("Enter the expense number or exact description to delete:");
+        String selection = scanner.nextLine().trim();
+        int selectedIndex;
+
+        try {
+            selectedIndex = Integer.parseInt(selection) - 1;
+            if (selectedIndex < 0 || selectedIndex >= expenseCount) {
+                System.out.println("Invalid expense number.");
+                return;
+            }
+        } catch (NumberFormatException exception) {
+            int[] matchingIndexes = new int[expenseCount];
+            int matchCount = 0;
+
+            for (int i = 0; i < expenseCount; i++) {
+                if (expenses[i].getDescription().equalsIgnoreCase(selection)) {
+                    matchingIndexes[matchCount] = i;
+                    matchCount++;
+                }
+            }
+
+            if (matchCount == 0) {
+                System.out.println("No expense found with that description.");
+                return;
+            }
+
+            if (matchCount == 1) {
+                selectedIndex = matchingIndexes[0];
+            } else {
+                System.out.println("Multiple expenses have that description:");
+                for (int i = 0; i < matchCount; i++) {
+                    int index = matchingIndexes[i];
+                    System.out.println("Expense " + (index + 1) + ":");
+                    printExpense(expenses[index]);
+                }
+
+                System.out.println("Enter the expense number to delete:");
+                String matchingSelection = scanner.nextLine().trim();
+                try {
+                    selectedIndex = Integer.parseInt(matchingSelection) - 1;
+                } catch (NumberFormatException invalidSelection) {
+                    System.out.println("Invalid expense number.");
+                    return;
+                }
+
+                boolean isMatchingExpense = false;
+                for (int i = 0; i < matchCount; i++) {
+                    if (matchingIndexes[i] == selectedIndex) {
+                        isMatchingExpense = true;
+                        break;
+                    }
+                }
+                if (!isMatchingExpense) {
+                    System.out.println("Invalid expense number.");
+                    return;
+                }
+            }
+        }
+
+        System.out.println("Expense selected for deletion:");
+        printExpense(expenses[selectedIndex]);
+        System.out.println("Are you sure you want to delete this expense? (y/n):");
+        String confirmation = scanner.nextLine().trim();
+        if (!confirmation.equalsIgnoreCase("y") && !confirmation.equalsIgnoreCase("yes")) {
+            System.out.println("Expense deletion cancelled.");
+            return;
+        }
+
+        for (int i = selectedIndex; i < expenseCount - 1; i++) {
+            expenses[i] = expenses[i + 1];
+        }
+        expenses[expenseCount - 1] = null;
+        expenseCount--;
+        System.out.println("Expense deleted successfully.");
+    }
+
     public void searchByCategory(String category) {
         String matchingCategory = findCategory(category);
         if (matchingCategory == null) {

@@ -40,7 +40,8 @@ public class Main {
             System.out.println("9. Check Budget Limits");
             System.out.println("10. View Monthly Expense Total");
             System.out.println("11. View Monthly Expense Summary");
-            System.out.println("12. Exit");
+            System.out.println("12. Delete expense");
+            System.out.println("13. Exit");
             System.out.println("Enter your choice:");
 
             choice = scanner.nextLine().trim();
@@ -131,14 +132,18 @@ public class Main {
                     break;
 
                 case "12":
+                    expenseManager.deleteExpense(scanner);
+                    break;
+
+                case "13":
                     System.out.println("Goodbye!");
                     break;
 
                 default:
-                    System.out.println("Invalid choice. Please enter a number from 1 to 12.");
+                    System.out.println("Invalid choice. Please enter a number from 1 to 13.");
             }
 
-        } while (!choice.equals("12"));
+        } while (!choice.equals("13"));
     }
 
     // Validate month in YYYY-MM format
