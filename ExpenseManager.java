@@ -704,9 +704,8 @@ public void displayCategoryExpenseSummary(Scanner scanner) {
     }
 
     double overallTotal = 0;
-    int overallCount = 0;
     double[] categoryTotals = new double[CATEGORIES.length];
-    int[] categoryCounts = new int[CATEGORIES.length];
+    int[] categoryCounts = calculateCategoryExpenseCounts(month);
 
     for (int i = 0; i < expenseCount; i++) {
         Expense expense = expenses[i];
@@ -717,12 +716,15 @@ public void displayCategoryExpenseSummary(Scanner scanner) {
         for (int j = 0; j < CATEGORIES.length; j++) {
             if (expense.getCategory().equalsIgnoreCase(CATEGORIES[j])) {
                 categoryTotals[j] = categoryTotals[j] + expense.getAmount();
-                categoryCounts[j]++;
                 overallTotal = overallTotal + expense.getAmount();
-                overallCount++;
                 break;
             }
         }
+    }
+
+    int overallCount = 0;
+    for (int categoryCount : categoryCounts) {
+        overallCount = overallCount + categoryCount;
     }
 
     if (overallCount == 0) {
@@ -744,6 +746,40 @@ public void displayCategoryExpenseSummary(Scanner scanner) {
     }
     System.out.println("Overall Total: Rs. " + overallTotal);
     System.out.println("Overall Number of Expenses: " + overallCount);
+}
+
+public void displayExpenseCountByCategory() {
+    if (expenseCount == 0) {
+        System.out.println("No expenses recorded.");
+        return;
+    }
+
+    int[] categoryCounts = calculateCategoryExpenseCounts("");
+    System.out.println("===== Expense Count by Category =====");
+    for (int i = 0; i < CATEGORIES.length; i++) {
+        System.out.println(CATEGORIES[i] + ": " + categoryCounts[i]);
+    }
+    System.out.println("Total Recorded Expenses: " + expenseCount);
+}
+
+private int[] calculateCategoryExpenseCounts(String month) {
+    int[] categoryCounts = new int[CATEGORIES.length];
+
+    for (int i = 0; i < expenseCount; i++) {
+        Expense expense = expenses[i];
+        if (!month.isEmpty() && !expense.getDate().startsWith(month + "-")) {
+            continue;
+        }
+
+        for (int j = 0; j < CATEGORIES.length; j++) {
+            if (expense.getCategory().equalsIgnoreCase(CATEGORIES[j])) {
+                categoryCounts[j]++;
+                break;
+            }
+        }
+    }
+
+    return categoryCounts;
 }
 
 public double calculateCategoryExpenses(String month, String category) {

@@ -51,7 +51,8 @@ public class Main {
             System.out.println("20. Category-wise expense summary");
             System.out.println("21. Compare expenses between months");
             System.out.println("22. Average monthly expense");
-            System.out.println("23. Exit");
+            System.out.println("23. Expense count by category");
+            System.out.println("24. Exit");
             System.out.println("Enter your choice:");
 
             choice = scanner.nextLine().trim();
@@ -213,14 +214,18 @@ public class Main {
                     break;
 
                 case "23":
+                    expenseManager.displayExpenseCountByCategory();
+                    break;
+
+                case "24":
                     System.out.println("Goodbye!");
                     break;
 
                 default:
-                    System.out.println("Invalid choice. Please enter a number from 1 to 23.");
+                    System.out.println("Invalid choice. Please enter a number from 1 to 24.");
             }
 
-        } while (!choice.equals("23"));
+        } while (!choice.equals("24"));
     }
 
     // Validate month in YYYY-MM format
