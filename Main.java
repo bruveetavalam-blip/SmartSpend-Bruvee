@@ -54,7 +54,8 @@ public class Main {
             System.out.println("23. Expense count by category");
             System.out.println("24. Export expenses to CSV");
             System.out.println("25. Import expenses from CSV");
-            System.out.println("26. Exit");
+            System.out.println("26. Overall expense statistics");
+            System.out.println("27. Exit");
             System.out.println("Enter your choice:");
 
             choice = scanner.nextLine().trim();
@@ -228,14 +229,18 @@ public class Main {
                     break;
 
                 case "26":
+                    expenseManager.displayOverallExpenseStatistics();
+                    break;
+
+                case "27":
                     System.out.println("Goodbye!");
                     break;
 
                 default:
-                    System.out.println("Invalid choice. Please enter a number from 1 to 26.");
+                    System.out.println("Invalid choice. Please enter a number from 1 to 27.");
             }
 
-        } while (!choice.equals("26"));
+        } while (!choice.equals("27"));
     }
 
     // Validate month in YYYY-MM format

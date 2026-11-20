@@ -769,6 +769,38 @@ public void displayExpenseCountByCategory() {
     System.out.println("Total Recorded Expenses: " + expenseCount);
 }
 
+public void displayOverallExpenseStatistics() {
+    if (expenseCount == 0) {
+        System.out.println("No expenses recorded. Overall statistics are unavailable.");
+        return;
+    }
+
+    double total = 0;
+    Expense highestExpense = expenses[0];
+    Expense lowestExpense = expenses[0];
+
+    for (int i = 0; i < expenseCount; i++) {
+        Expense expense = expenses[i];
+        total = total + expense.getAmount();
+
+        if (expense.getAmount() > highestExpense.getAmount()) {
+            highestExpense = expense;
+        }
+        if (expense.getAmount() < lowestExpense.getAmount()) {
+            lowestExpense = expense;
+        }
+    }
+
+    System.out.println("===== Overall Expense Statistics =====");
+    System.out.println("Total Number of Expenses: " + expenseCount);
+    System.out.println("Total Amount Spent: Rs. " + total);
+    System.out.println("Highest Expense: Rs. " + highestExpense.getAmount());
+    System.out.println("Highest Expense Category: " + highestExpense.getCategory());
+    System.out.println("Lowest Expense: Rs. " + lowestExpense.getAmount());
+    System.out.println("Lowest Expense Category: " + lowestExpense.getCategory());
+    System.out.println("Average Amount per Expense: Rs. " + (total / expenseCount));
+}
+
 public void exportExpensesToCsv() {
     if (expenseCount == 0) {
         System.out.println("No expenses to export.");
