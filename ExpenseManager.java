@@ -623,6 +623,62 @@ public void displayMonthlyExpenseSummary(String month) {
     System.out.println("Lowest Expense Category: " + lowestExpense.getCategory());
 }
 
+public void displayCategoryExpenseSummary(Scanner scanner) {
+    if (expenseCount == 0) {
+        System.out.println("No expenses recorded.");
+        return;
+    }
+
+    System.out.println("Enter month (YYYY-MM), or press Enter for all-time summary:");
+    String month = scanner.nextLine().trim();
+    if (!month.isEmpty() && !isValidDate(month + "-01")) {
+        System.out.println("Invalid month. Use YYYY-MM.");
+        return;
+    }
+
+    double overallTotal = 0;
+    int overallCount = 0;
+    double[] categoryTotals = new double[CATEGORIES.length];
+    int[] categoryCounts = new int[CATEGORIES.length];
+
+    for (int i = 0; i < expenseCount; i++) {
+        Expense expense = expenses[i];
+        if (!month.isEmpty() && !expense.getDate().startsWith(month + "-")) {
+            continue;
+        }
+
+        for (int j = 0; j < CATEGORIES.length; j++) {
+            if (expense.getCategory().equalsIgnoreCase(CATEGORIES[j])) {
+                categoryTotals[j] = categoryTotals[j] + expense.getAmount();
+                categoryCounts[j]++;
+                overallTotal = overallTotal + expense.getAmount();
+                overallCount++;
+                break;
+            }
+        }
+    }
+
+    if (overallCount == 0) {
+        if (month.isEmpty()) {
+            System.out.println("No expenses recorded.");
+        } else {
+            System.out.println("No expenses found for " + month + ".");
+        }
+        return;
+    }
+
+    System.out.println("===== Category-wise Expense Summary =====");
+    System.out.println(month.isEmpty() ? "Period: All time" : "Month: " + month);
+    for (int i = 0; i < CATEGORIES.length; i++) {
+        System.out.println("Category: " + CATEGORIES[i]);
+        System.out.println("Total: Rs. " + categoryTotals[i]);
+        System.out.println("Number of Expenses: " + categoryCounts[i]);
+        System.out.println("--------------------");
+    }
+    System.out.println("Overall Total: Rs. " + overallTotal);
+    System.out.println("Overall Number of Expenses: " + overallCount);
+}
+
 public double calculateCategoryExpenses(String month, String category) {
     double total = 0;
 

@@ -48,7 +48,8 @@ public class Main {
             System.out.println("17. Sort expenses by date");
             System.out.println("18. Search expenses by date range");
             System.out.println("19. Filter expenses by amount range");
-            System.out.println("20. Exit");
+            System.out.println("20. Category-wise expense summary");
+            System.out.println("21. Exit");
             System.out.println("Enter your choice:");
 
             choice = scanner.nextLine().trim();
@@ -171,14 +172,18 @@ public class Main {
                     break;
 
                 case "20":
+                    expenseManager.displayCategoryExpenseSummary(scanner);
+                    break;
+
+                case "21":
                     System.out.println("Goodbye!");
                     break;
 
                 default:
-                    System.out.println("Invalid choice. Please enter a number from 1 to 20.");
+                    System.out.println("Invalid choice. Please enter a number from 1 to 21.");
             }
 
-        } while (!choice.equals("20"));
+        } while (!choice.equals("21"));
     }
 
     // Validate month in YYYY-MM format
