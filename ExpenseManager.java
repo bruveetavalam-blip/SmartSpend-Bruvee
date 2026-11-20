@@ -149,6 +149,46 @@ public class ExpenseManager {
 
     return total;
 }
+
+public void displayMonthlyExpenseSummary(String month) {
+    double total = 0;
+    int count = 0;
+    Expense highestExpense = null;
+    Expense lowestExpense = null;
+
+    for (int i = 0; i < expenseCount; i++) {
+        Expense expense = expenses[i];
+
+        if (expense.getDate().startsWith(month + "-")) {
+            total = total + expense.getAmount();
+            count++;
+
+            if (highestExpense == null || expense.getAmount() > highestExpense.getAmount()) {
+                highestExpense = expense;
+            }
+
+            if (lowestExpense == null || expense.getAmount() < lowestExpense.getAmount()) {
+                lowestExpense = expense;
+            }
+        }
+    }
+
+    System.out.println("===== Monthly Expense Summary =====");
+    System.out.println("Month: " + month);
+    System.out.println("Total Expenses: Rs. " + total);
+    System.out.println("Number of Expenses: " + count);
+
+    if (count == 0) {
+        System.out.println("No expenses found in that month.");
+        return;
+    }
+
+    System.out.println("Highest Expense: Rs. " + highestExpense.getAmount());
+    System.out.println("Highest Expense Category: " + highestExpense.getCategory());
+    System.out.println("Lowest Expense: Rs. " + lowestExpense.getAmount());
+    System.out.println("Lowest Expense Category: " + lowestExpense.getCategory());
+}
+
 public double calculateCategoryExpenses(String month, String category) {
     double total = 0;
 
