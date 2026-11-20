@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ExpenseManager {
@@ -352,6 +353,28 @@ public class ExpenseManager {
 
         if (!found) {
             System.out.println("No expenses found with that amount.");
+        }
+    }
+
+    public void searchByDescription(Scanner scanner) {
+        System.out.println("Enter a word or phrase to search in expense descriptions:");
+        String keyword = scanner.nextLine().trim();
+        if (keyword.isEmpty()) {
+            System.out.println("Search keyword cannot be empty.");
+            return;
+        }
+
+        String searchText = keyword.toLowerCase(Locale.ROOT);
+        boolean found = false;
+        for (int i = 0; i < expenseCount; i++) {
+            if (expenses[i].getDescription().toLowerCase(Locale.ROOT).contains(searchText)) {
+                printExpense(expenses[i]);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No expenses found with that description keyword.");
         }
     }
 
