@@ -136,4 +136,17 @@ public class ExpenseManager {
         System.out.println("Description: " + expense.getDescription());
         System.out.println();
     }
+    public double calculateMonthlyExpenses(String month) {
+    double total = 0;
+
+    for (int i = 0; i < expenseCount; i++) {
+        Expense expense = expenses[i];
+
+        if (expense.getDate().startsWith(month + "-")) {
+            total = total + expense.getAmount();
+        }
+    }
+
+    return total;
+}
 }
