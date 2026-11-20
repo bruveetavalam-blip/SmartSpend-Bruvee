@@ -7,6 +7,7 @@ public class Main {
         System.out.println("Expense Tracker and Budget Planner");
 
         Scanner scanner = new Scanner(System.in);
+        ExpenseManager expenseManager = new ExpenseManager();
         String choice;
 
         do {
@@ -17,7 +18,7 @@ public class Main {
 
             switch (choice) {
                 case "1":
-                    System.out.println("You selected Add expense.");
+                    expenseManager.addExpense();
                     break;
                 case "2":
                     System.out.println("Goodbye!");
