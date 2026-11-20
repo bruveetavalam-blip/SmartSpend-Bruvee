@@ -378,6 +378,47 @@ public class ExpenseManager {
         }
     }
 
+    public void displayExpensesSortedByAmount(Scanner scanner) {
+        if (expenseCount == 0) {
+            System.out.println("No expenses to sort.");
+            return;
+        }
+
+        System.out.println("Choose sort order:");
+        System.out.println("1. Ascending (lowest to highest)");
+        System.out.println("2. Descending (highest to lowest)");
+        String order = scanner.nextLine().trim();
+        if (!order.equals("1") && !order.equals("2")) {
+            System.out.println("Invalid choice. Enter 1 for ascending or 2 for descending.");
+            return;
+        }
+
+        Expense[] sortedExpenses = new Expense[expenseCount];
+        System.arraycopy(expenses, 0, sortedExpenses, 0, expenseCount);
+
+        for (int i = 0; i < sortedExpenses.length - 1; i++) {
+            for (int j = 0; j < sortedExpenses.length - i - 1; j++) {
+                boolean outOfOrder;
+                if (order.equals("1")) {
+                    outOfOrder = sortedExpenses[j].getAmount() > sortedExpenses[j + 1].getAmount();
+                } else {
+                    outOfOrder = sortedExpenses[j].getAmount() < sortedExpenses[j + 1].getAmount();
+                }
+
+                if (outOfOrder) {
+                    Expense temp = sortedExpenses[j];
+                    sortedExpenses[j] = sortedExpenses[j + 1];
+                    sortedExpenses[j + 1] = temp;
+                }
+            }
+        }
+
+        System.out.println("===== Expenses Sorted by Amount =====");
+        for (Expense expense : sortedExpenses) {
+            printExpense(expense);
+        }
+    }
+
     private String findCategory(String input) {
         String trimmedInput = input.trim();
         for (String category : CATEGORIES) {
