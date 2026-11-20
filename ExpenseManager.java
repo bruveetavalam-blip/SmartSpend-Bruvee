@@ -419,6 +419,47 @@ public class ExpenseManager {
         }
     }
 
+    public void displayExpensesSortedByDate(Scanner scanner) {
+        if (expenseCount == 0) {
+            System.out.println("No expenses to sort.");
+            return;
+        }
+
+        System.out.println("Choose sort order:");
+        System.out.println("1. Oldest to newest");
+        System.out.println("2. Newest to oldest");
+        String order = scanner.nextLine().trim();
+        if (!order.equals("1") && !order.equals("2")) {
+            System.out.println("Invalid choice. Enter 1 for oldest to newest or 2 for newest to oldest.");
+            return;
+        }
+
+        Expense[] sortedExpenses = new Expense[expenseCount];
+        System.arraycopy(expenses, 0, sortedExpenses, 0, expenseCount);
+
+        for (int i = 0; i < sortedExpenses.length - 1; i++) {
+            for (int j = 0; j < sortedExpenses.length - i - 1; j++) {
+                int comparison = sortedExpenses[j].getDate().compareTo(
+                    sortedExpenses[j + 1].getDate()
+                );
+                boolean outOfOrder = order.equals("1")
+                    ? comparison > 0
+                    : comparison < 0;
+
+                if (outOfOrder) {
+                    Expense temp = sortedExpenses[j];
+                    sortedExpenses[j] = sortedExpenses[j + 1];
+                    sortedExpenses[j + 1] = temp;
+                }
+            }
+        }
+
+        System.out.println("===== Expenses Sorted by Date =====");
+        for (Expense expense : sortedExpenses) {
+            printExpense(expense);
+        }
+    }
+
     private String findCategory(String input) {
         String trimmedInput = input.trim();
         for (String category : CATEGORIES) {
