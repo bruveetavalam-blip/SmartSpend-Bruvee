@@ -55,6 +55,23 @@ public class ExpenseManager {
         }
     }
 
+    public void searchByMonth(String month) {
+        boolean found = false;
+        String datePrefix = month + "-";
+
+        for (int i = 0; i < expenseCount; i++) {
+            Expense expense = expenses[i];
+            if (expense.getDate().startsWith(datePrefix)) {
+                printExpense(expense);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No expenses found in that month.");
+        }
+    }
+
     private void printExpense(Expense expense) {
         System.out.println("Amount: " + expense.getAmount());
         System.out.println("Category: " + expense.getCategory());

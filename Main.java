@@ -15,6 +15,7 @@ public class Main {
             System.out.println("2. Exit");
             System.out.println("3. Display all expenses");
             System.out.println("4. Search by category");
+            System.out.println("5. Search by month");
             System.out.println("Enter your choice:");
             choice = scanner.nextLine();
 
@@ -32,8 +33,12 @@ public class Main {
                     System.out.println("Enter category to search:");
                     expenseManager.searchByCategory(scanner.nextLine());
                     break;
+                case "5":
+                    System.out.println("Enter month to search (YYYY-MM):");
+                    expenseManager.searchByMonth(scanner.nextLine());
+                    break;
                 default:
-                    System.out.println("Invalid choice. Please enter 1, 2, 3, or 4.");
+                    System.out.println("Invalid choice. Please enter 1, 2, 3, 4, or 5.");
             }
         } while (!choice.equals("2"));
 
