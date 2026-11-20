@@ -50,7 +50,8 @@ public class Main {
             System.out.println("19. Filter expenses by amount range");
             System.out.println("20. Category-wise expense summary");
             System.out.println("21. Compare expenses between months");
-            System.out.println("22. Exit");
+            System.out.println("22. Average monthly expense");
+            System.out.println("23. Exit");
             System.out.println("Enter your choice:");
 
             choice = scanner.nextLine().trim();
@@ -201,14 +202,25 @@ public class Main {
                     break;
 
                 case "22":
+                    System.out.println("Enter month (YYYY-MM):");
+                    String averageMonth = scanner.nextLine().trim();
+                    if (!isValidMonth(averageMonth)) {
+                        System.out.println("Invalid month. Use YYYY-MM.");
+                        break;
+                    }
+
+                    expenseManager.displayAverageMonthlyExpense(averageMonth);
+                    break;
+
+                case "23":
                     System.out.println("Goodbye!");
                     break;
 
                 default:
-                    System.out.println("Invalid choice. Please enter a number from 1 to 22.");
+                    System.out.println("Invalid choice. Please enter a number from 1 to 23.");
             }
 
-        } while (!choice.equals("22"));
+        } while (!choice.equals("23"));
     }
 
     // Validate month in YYYY-MM format

@@ -584,6 +584,35 @@ public class ExpenseManager {
     return total;
 }
 
+public int calculateMonthlyExpenseCount(String month) {
+    int count = 0;
+
+    for (int i = 0; i < expenseCount; i++) {
+        if (expenses[i].getDate().startsWith(month + "-")) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+public void displayAverageMonthlyExpense(String month) {
+    double total = calculateMonthlyExpenses(month);
+    int count = calculateMonthlyExpenseCount(month);
+
+    System.out.println("===== Average Monthly Expense =====");
+    System.out.println("Month: " + month);
+    System.out.println("Total Expenses: Rs. " + total);
+    System.out.println("Number of Transactions: " + count);
+
+    if (count == 0) {
+        System.out.println("No expenses found in that month; average cannot be calculated.");
+        return;
+    }
+
+    System.out.println("Average per Transaction: Rs. " + (total / count));
+}
+
 public void displayMonthlyExpenseComparison(String firstMonth, String secondMonth) {
     double firstTotal = calculateMonthlyExpenses(firstMonth);
     double secondTotal = calculateMonthlyExpenses(secondMonth);
