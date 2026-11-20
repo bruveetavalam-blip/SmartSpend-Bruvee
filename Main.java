@@ -13,6 +13,7 @@ public class Main {
         do {
             System.out.println("1. Add expense");
             System.out.println("2. Exit");
+            System.out.println("3. Display all expenses");
             System.out.println("Enter your choice:");
             choice = scanner.nextLine();
 
@@ -23,8 +24,11 @@ public class Main {
                 case "2":
                     System.out.println("Goodbye!");
                     break;
+                case "3":
+                    expenseManager.displayAllExpenses();
+                    break;
                 default:
-                    System.out.println("Invalid choice. Please enter 1 or 2.");
+                    System.out.println("Invalid choice. Please enter 1, 2, or 3.");
             }
         } while (!choice.equals("2"));
 

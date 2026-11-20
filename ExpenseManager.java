@@ -27,4 +27,23 @@ public class ExpenseManager {
         expenseCount++;
         System.out.println("Expense stored: " + expense.getDescription());
     }
+
+    public void displayAllExpenses() {
+        if (expenseCount == 0) {
+            System.out.println("No expenses to display.");
+            return;
+        }
+
+        for (int i = 0; i < expenseCount; i++) {
+            printExpense(expenses[i]);
+        }
+    }
+
+    private void printExpense(Expense expense) {
+        System.out.println("Amount: " + expense.getAmount());
+        System.out.println("Category: " + expense.getCategory());
+        System.out.println("Date: " + expense.getDate());
+        System.out.println("Description: " + expense.getDescription());
+        System.out.println();
+    }
 }
