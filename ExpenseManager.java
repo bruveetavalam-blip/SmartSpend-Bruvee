@@ -1,8 +1,12 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -795,6 +799,106 @@ public void exportExpensesToCsv() {
 
 private String toCsvField(String value) {
     return "\"" + value.replace("\"", "\"\"") + "\"";
+}
+
+public void importExpensesFromCsv() {
+    int importedCount = 0;
+    int skippedCount = 0;
+    String fileName = "expenses.csv";
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+        String header = reader.readLine();
+        if (header == null) {
+            System.out.println("The CSV file is empty; no expenses were imported.");
+            return;
+        }
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] fields = parseCsvRow(line);
+            if (fields == null || fields.length != 4) {
+                skippedCount++;
+                continue;
+            }
+
+            double amount;
+            try {
+                amount = Double.parseDouble(fields[0].trim());
+            } catch (NumberFormatException exception) {
+                skippedCount++;
+                continue;
+            }
+
+            String category = findCategory(fields[1]);
+            String date = fields[2].trim();
+            String description = fields[3].trim();
+            if (!Double.isFinite(amount) || amount <= 0
+                    || category == null || !isValidDate(date) || description.isEmpty()) {
+                skippedCount++;
+                continue;
+            }
+
+            if (expenseCount == expenses.length) {
+                skippedCount++;
+                continue;
+            }
+
+            expenses[expenseCount] = new Expense(amount, category, date, description);
+            expenseCount++;
+            importedCount++;
+        }
+    } catch (FileNotFoundException exception) {
+        System.out.println("CSV file not found: " + fileName);
+        return;
+    } catch (IOException exception) {
+        System.out.println("Unable to read " + fileName + ": " + exception.getMessage());
+        System.out.println("Expenses imported before the error: " + importedCount);
+        System.out.println("Rows skipped: " + skippedCount);
+        return;
+    }
+
+    System.out.println("Expenses successfully imported: " + importedCount);
+    System.out.println("Rows skipped: " + skippedCount);
+}
+
+private String[] parseCsvRow(String line) {
+    ArrayList<String> fields = new ArrayList<>();
+    StringBuilder field = new StringBuilder();
+    boolean inQuotes = false;
+    boolean quoteClosed = false;
+
+    for (int i = 0; i < line.length(); i++) {
+        char character = line.charAt(i);
+        if (inQuotes) {
+            if (character == '"') {
+                if (i + 1 < line.length() && line.charAt(i + 1) == '"') {
+                    field.append('"');
+                    i++;
+                } else {
+                    inQuotes = false;
+                    quoteClosed = true;
+                }
+            } else {
+                field.append(character);
+            }
+        } else if (character == ',') {
+            fields.add(field.toString());
+            field.setLength(0);
+            quoteClosed = false;
+        } else if (character == '"' && field.length() == 0 && !quoteClosed) {
+            inQuotes = true;
+        } else if (quoteClosed) {
+            return null;
+        } else {
+            field.append(character);
+        }
+    }
+
+    if (inQuotes) {
+        return null;
+    }
+    fields.add(field.toString());
+    return fields.toArray(new String[0]);
 }
 
 private int[] calculateCategoryExpenseCounts(String month) {
